@@ -39,4 +39,17 @@ local function test_polygon()
     print(stl_results)
 end
 
-test_polygon()
+-- test_polygon()
+
+local function test_square()
+
+    -- local solid = stl.square(5)
+    local solid = stl.square(5, true)
+    
+    local stl_results = stl.encode_solid(solid)
+    print(stl_results)
+end
+
+-- test_square()
+
+-- f3d test/square.stl --grid --axis --edges --up +Z

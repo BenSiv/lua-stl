@@ -56,7 +56,7 @@ local function encode_solid(solid)
             table.insert(encoded_tbl, table.concat(vertex_position, " "))
         end
         table.insert(encoded_tbl, "\t\tendloop")
-        table.insert(encoded_tbl, "\tendtfacet")
+        table.insert(encoded_tbl, "\tendfacet")
     end
     table.insert(encoded_tbl, "endsolid")
 
@@ -102,7 +102,7 @@ function validate_points(points)
 end
 
 local function polygon(points)
-    local result = create_solid("polygon")
+    local solid = create_solid("polygon")
     
     if not validate_points(points) then
         return nil
@@ -111,8 +111,8 @@ local function polygon(points)
     facet_num = length(points) - 2
 
     for fct = 1, facet_num do
-        result = stl.add_facet(
-            result,
+        solid = stl.add_facet(
+            solid,
             {0,0,1},
             points[0+fct],
             points[1+fct],
@@ -120,12 +120,38 @@ local function polygon(points)
         )
     end
 
-    return result
+    return solid
+end
+
+local function square(size, centered)
+    centered = centered or false
+    local points
+
+    if centered then
+        local hs = size/2 -- half size
+        points = {
+            {-hs,-hs,0},
+            {-hs,hs,0},
+            {hs,-hs,0},
+            {hs,hs,0}
+        }
+    else
+        points = {
+            {0,0,0},
+            {size,0,0},
+            {0,size,0},
+            {size,size,0}
+        }
+    end
+
+    local solid = polygon(points)
+    return solid
 end
 
 stl.create_solid = create_solid
 stl.add_facet = add_facet
 stl.encode_solid = encode_solid
 stl.polygon = polygon
+stl.square = square
 
 return stl
