@@ -1,23 +1,42 @@
-package.path = "../src/?.lua;" .. package.path
+package.path = "src/?.lua;" .. package.path
 
 local stl = require("stl")
 
-local triangle = stl.create_solid("trig")
+local function test_basic_solid()
 
-triangle = stl.add_facet(
-    triangle,
-    {0,0,1},
-    {0,0,0},
-    {1,0,0},
-    {1,1,0}
-)
+    local solid = stl.create_solid("trig")
 
-triangle = stl.add_facet(
-    triangle,
-    {0,0,1},
-    {0,0,0},
-    {0,1,0},
-    {1,1,0}
-)
+    solid = stl.add_facet(
+        solid,
+        {0,0,1},
+        {0,0,0},
+        {1,0,0},
+        {1,1,0}
+    )
+    
+    solid = stl.add_facet(
+        solid,
+        {0,0,1},
+        {0,0,0},
+        {0,1,0},
+        {1,1,0}
+    )
+    
+    local stl_results = stl.encode_solid(solid)
+    print(stl_results)
+end
 
-print(stl.encode_solid(triangle))
+-- test_basic_solid()
+
+local function test_polygon()
+
+    -- local solid = stl.polygon({{0,0,0},{0,0,1}}) -- only 2 points
+    -- local solid = stl.polygon({{0,0,0},{0,0,"1"},{0,1,1}}) -- incorrect type
+    -- local solid = stl.polygon({{0,0,0},{0,0,1},{0,0,1}}) -- duplicate points
+    local solid = stl.polygon({{0,0,0},{0,0,1},{0,1,1},{1,1,1}})
+    
+    local stl_results = stl.encode_solid(solid)
+    print(stl_results)
+end
+
+test_polygon()

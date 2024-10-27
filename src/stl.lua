@@ -1,3 +1,5 @@
+require("utils").using("utils")
+
 local stl = {}
 
 local function create_solid(name)
@@ -62,8 +64,68 @@ local function encode_solid(solid)
     return encoded_str
 end
 
+function point_to_string(point)
+    return table.concat(point, ",")
+end
+
+function validate_points(points)
+    if length(points) < 3 then
+        print("The points table must contain at least 3 points.")
+        return false
+    end
+
+    local seen_points = {}
+
+    for i, point in ipairs(points) do
+        if type(point) ~= "table" or length(point )~= 3 then
+            print("Point at index " .. i .. " must be a table with exactly 3 numerical values.")
+            return false
+        end
+
+        for j, coord in ipairs(point) do
+            if type(coord) ~= "number" then
+                print("Coordinate in point " .. i .. " at index " .. j .. " must be a number.")
+                return false
+            end
+        end
+    
+        local point_str = point_to_string(point)
+        if seen_points[point_str] then
+            print("Duplicate point found at index " .. i .. ": " .. point_str)
+            return false
+        end
+        seen_points[point_str] = true
+
+    end
+
+    return true
+end
+
+local function polygon(points)
+    local result = create_solid("polygon")
+    
+    if not validate_points(points) then
+        return nil
+    end
+
+    facet_num = length(points) - 2
+
+    for fct = 1, facet_num do
+        result = stl.add_facet(
+            result,
+            {0,0,1},
+            points[0+fct],
+            points[1+fct],
+            points[2+fct]
+        )
+    end
+
+    return result
+end
+
 stl.create_solid = create_solid
 stl.add_facet = add_facet
 stl.encode_solid = encode_solid
+stl.polygon = polygon
 
 return stl
