@@ -174,6 +174,32 @@ local function rectangle(width, height, centered)
     return solid
 end
 
+local function circle(radius, resolution)
+    local solid = create_solid("circle")
+
+    local angle_step = (2 * math.pi) / resolution
+
+    local prev_x = radius * math.cos(0)
+    local prev_y = radius * math.sin(0)
+
+    for i = 1, resolution do
+        local angle = i * angle_step
+        local x = radius * math.cos(angle)
+        local y = radius * math.sin(angle)
+
+        solid = stl.add_facet(
+            solid,
+            {0, 0, 1},
+            {0, 0, 0},
+            {prev_x, prev_y, 0},
+            {x, y, 0}
+        )
+
+        prev_x, prev_y = x, y
+    end
+
+    return solid
+end
 
 stl.create_solid = create_solid
 stl.add_facet = add_facet
@@ -181,5 +207,6 @@ stl.encode_solid = encode_solid
 stl.polygon = polygon
 stl.square = square
 stl.rectangle = rectangle
+stl.circle = circle
 
 return stl
