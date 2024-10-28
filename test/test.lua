@@ -53,3 +53,15 @@ end
 -- test_square()
 
 -- f3d test/square.stl --grid --axis --edges --up +Z
+
+
+local function test_rectangle()
+
+    -- local solid = stl.square(5, 7)
+    local solid = stl.rectangle(5, 7, true)
+    
+    local stl_results = stl.encode_solid(solid)
+    print(stl_results)
+end
+
+test_rectangle()

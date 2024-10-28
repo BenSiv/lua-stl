@@ -148,10 +148,38 @@ local function square(size, centered)
     return solid
 end
 
+local function rectangle(width, height, centered)
+    centered = centered or false
+    local points
+
+    if centered then
+        local hw = width / 2  -- half width
+        local hh = height / 2 -- half height
+        points = {
+            {-hw, -hh, 0},
+            {-hw, hh, 0},
+            {hw, -hh, 0},
+            {hw, hh, 0}
+        }
+    else
+        points = {
+            {0, 0, 0},
+            {width, 0, 0},
+            {0, height, 0},
+            {width, height, 0}
+        }
+    end
+
+    local solid = polygon(points)
+    return solid
+end
+
+
 stl.create_solid = create_solid
 stl.add_facet = add_facet
 stl.encode_solid = encode_solid
 stl.polygon = polygon
 stl.square = square
+stl.rectangle = rectangle
 
 return stl
