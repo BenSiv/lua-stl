@@ -54,7 +54,7 @@ end
 
 local function test_rectangle()
 
-    -- local solid = stl.square(5, 7)
+    -- local solid = stl.rectangle(5, 7)
     local solid = stl.rectangle(5, 7, true)
     
     local stl_results = stl.encode_solid(solid)
@@ -62,6 +62,16 @@ local function test_rectangle()
 end
 
 -- test_rectangle()
+
+local function test_triangle()
+
+    local solid = stl.triangle(5, 7)
+    
+    local stl_results = stl.encode_solid(solid)
+    print(stl_results)
+end
+
+test_triangle()
 
 local function test_circle()
 

@@ -148,6 +148,17 @@ local function square(size, centered)
     return solid
 end
 
+local function triangle(width, height)
+    local points = {
+        {0, 0, 0},
+        {width, 0, 0},
+        {0, height, 0}
+    }
+
+    local solid = polygon(points)
+    return solid
+end
+
 local function rectangle(width, height, centered)
     centered = centered or false
     local points
@@ -207,6 +218,7 @@ stl.encode_solid = encode_solid
 stl.polygon = polygon
 stl.square = square
 stl.rectangle = rectangle
+stl.triangle = triangle
 stl.circle = circle
 
 return stl
